@@ -1,0 +1,45 @@
+# Aimport requests
+import matplotlib.pyplot as plt
+import seaborn as sns
+import datetime
+
+# Set API Key and City
+API_KEY = "YOUR_API_KEY"  # Replace with your OpenWeatherMap API key
+CITY = "New York"
+URL = f"http://api.openweathermap.org/data/2.5/forecast?q={CITY}&units=metric&appid={API_KEY}"
+
+# Fetch weather data
+response = requests.get(URL)
+data = response.json()
+
+# Extract relevant weather information
+dates = []
+temps = []
+humidity = []
+for entry in data['list']:
+    dates.append(datetime.datetime.fromtimestamp(entry['dt']))  # Convert timestamp to datetime
+    temps.append(entry['main']['temp'])  # Temperature in Celsius
+    humidity.append(entry['main']['humidity'])  # Humidity percentage
+
+# Create visualizations
+sns.set_theme(style="darkgrid")
+
+# Temperature Plot
+plt.figure(figsize=(10, 5))
+plt.plot(dates, temps, marker='o', linestyle='-', color='b', label='Temperature (°C)')
+plt.xlabel("Date and Time")
+plt.ylabel("Temperature (°C)")
+plt.title(f"Temperature Forecast for {CITY}")
+plt.xticks(rotation=45)
+plt.legend()
+plt.show()
+
+# Humidity Plot
+plt.figure(figsize=(10, 5))
+plt.plot(dates, humidity, marker='s', linestyle='-', color='g', label='Humidity (%)')
+plt.xlabel("Date and Time")
+plt.ylabel("Humidity (%)")
+plt.title(f"Humidity Forecast for {CITY}")
+plt.xticks(rotation=45)
+plt.legend()
+plt.show()PI--Integration-and-data-visualization-1
